@@ -2,7 +2,6 @@
 
 A multi-stage, leakage-aware feature selection pipeline for molecular machine learning, applied to classifying BACE1 (β-secretase 1, an Alzheimer's drug target) activity from SMILES strings. The framework takes a molecule dataset from ~1,000 raw Morgan-fingerprint + descriptor features down to a compact, statistically stable feature set — validated with scaffold-based splitting and a virtual-screening enrichment metric, not just a random train/test split.
 
-> The interesting part of this project isn't "a model got 99% AUC" — it's the pipeline discipline: every filtering stage is designed to avoid the leakage traps that make molecular ML results look better than they are.
 
 ---
 
