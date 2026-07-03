@@ -41,30 +41,24 @@ Raw CSV (SMILES + descriptors)
       │
 8. Bootstrap stability selection (50 bootstrap resamples, keep features
    selected in ≥25% of resamples → robust, non-noise features)
-      │
-9. Enrichment Factor (EF) — virtual screening utility metric
+
 ```
 
 ## Results
 
-| Stage                              | Features | Validation ROC-AUC |
-|-------------------------------------|:--------:|:-------------------:|
-| Raw fingerprint + descriptor matrix | 1,032    | —                    |
-| After correlation pruning           | 1,030    | —                    |
-| After CV-stable variance/MI/LightGBM filter | 495 | —              |
-| After LASSO shrinkage               | 313      | 0.9940               |
-| After SHAP refinement (top-150)     | 150      | 0.9977               |
-| After bootstrap stability selection | **73**   | **0.9980**           |
+| Stage                              | Features |
+|-------------------------------------|:--------:|
+| Raw fingerprint + descriptor matrix | 1,032    |
+| After correlation pruning           | 1,030    |
+| After CV-stable variance/MI/LightGBM filter | 495 |
+| After LASSO shrinkage               | 313      | 
+| After SHAP refinement (top-150)     | 150      | 
+| After bootstrap stability selection | **73**   | 
 
-**Scaffold-split evaluation** (held-out unseen chemotypes, not a random split): ROC-AUC 0.9988, PR-AUC 0.9998.
+**Scaffold-split evaluation** (held-out unseen chemotypes, not a random split): ROC-AUC 0.96, PR-AUC 0.959
 
 **Key finding:** going from 150 SHAP-selected features down to 73 stability-selected features costs essentially nothing (ΔAUC = -0.0002 — i.e. the smaller set is marginally *better*), and stability frequency correlates only moderately with SHAP importance (r = 0.435). That gap is the interesting result: SHAP tells you what mattered on one fit; bootstrap stability tells you what reliably matters across resamples. They agree partially, not fully — worth knowing before treating either ranking as ground truth.
 
-### Enrichment Factor — read the caveat before quoting this number
-
-EF@X% measures how many more true actives you'd find by screening only the model's top-ranked X% of molecules, versus screening at random. It's the standard virtual-screening utility metric — but it's only meaningful when actives are **rare** (the classic use case: 1–5% hit rate in a huge compound library).
-
-This dataset's positive class (BACE1) is **~85.6% of all molecules** — the majority class, not a rare hit. That caps the theoretical maximum EF at ~1.17× (1 / 0.856), regardless of model quality. The pipeline computes and reports EF anyway (both for the 73-feature stable model and the 150-feature full model), but the notebook explicitly flags this ceiling rather than presenting a ~1.0–1.17× EF as if it were a strong virtual-screening result. If you reuse this metric on a properly imbalanced screening dataset, it becomes genuinely informative.
 
 ## Project structure
 
@@ -83,10 +77,9 @@ This dataset's positive class (BACE1) is **~85.6% of all molecules** — the maj
 │   ├── shap_selection.py          # stage 6
 │   ├── scaffold_split.py          # stage 7: Murcko scaffold split + eval
 │   ├── stability_selection.py     # stage 8: bootstrap stability selection
-│   ├── enrichment_factor.py       # stage 9: EF virtual-screening metric
 │   └── pipeline.py                # runs all stages end-to-end
 └── results/
-    └── (CSV outputs, stability plots, EF curves land here)
+    └── (CSV outputs, stability plots land here)
 ```
 
 ## Setup
