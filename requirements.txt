@@ -1,0 +1,9 @@
+rdkit>=2023.9
+lightgbm>=4.0
+shap>=0.44
+scikit-learn>=1.2
+pandas>=1.5
+numpy>=1.23
+matplotlib>=3.6
+seaborn>=0.12
+tqdm>=4.65
