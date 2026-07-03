@@ -115,9 +115,6 @@ from src.cv_feature_selection import select_stable_features
 # ...
 ```
 
-## Notable bug fix carried over from the original notebook
-
-The original "Stage 7 SHAP final eval" referenced undefined `X_train2/y_train2/X_test2/y_test2` variables — a copy-paste leftover that meant the printed "ROC-AUC using SHAP-selected features" wasn't actually using the SHAP-selected feature set. Fixed here by splitting `X_shap`/`y_shap` (the real SHAP-trimmed matrix) directly — see `src/shap_selection.py`.
 
 ## Tech stack
 
