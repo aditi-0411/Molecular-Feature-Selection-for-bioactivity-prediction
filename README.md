@@ -48,7 +48,7 @@ Raw CSV (SMILES + descriptors)
 
 | Stage                              | Features |
 |-------------------------------------|:--------:|
-| Raw fingerprint + descriptor matrix | 1,032    |
+| Raw fingerprint + descriptor matrix | 1,030    |
 | After correlation pruning           | 1,030    |
 | After  variance/MI                   | 830   |
 | After LightGBM filter                 | 495 |
@@ -56,7 +56,7 @@ Raw CSV (SMILES + descriptors)
 | After SHAP refinement (top-150)     | 150      | 
 | After bootstrap stability selection | **73**   | 
 
-**Scaffold-split evaluation** (held-out unseen chemotypes, not a random split): ROC-AUC 0.86, PR-AUC 0.859
+**Scaffold-split evaluation** (held-out unseen chemotypes, not a random split): ROC-AUC 0.86, PR-AUC 0.859 whereas 0.8998 being the ROC-AUC using all features instead of selected ones.
 
 **Key finding:** going from 150 SHAP-selected features down to 73 stability-selected features costs essentially nothing (ΔAUC = -0.0002 — i.e. the smaller set is marginally *better*), and stability frequency correlates only moderately with SHAP importance (r = 0.435). That gap is the interesting result: SHAP tells you what mattered on one fit; bootstrap stability tells you what reliably matters across resamples. They agree partially, not fully — worth knowing before treating either ranking as ground truth.
 
